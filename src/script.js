@@ -6,6 +6,7 @@ import earthFragmentShader from './shaders/earth/fragment.glsl'
 import atmosphereVertexShader from './shaders/atmosphere/vertex.glsl'
 import atmosphereFragmentShader from './shaders/atmosphere/fragment.glsl'
 import "./style.css"
+import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 
 /**
  * Base
@@ -184,26 +185,34 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(sizes.pixelRatio)
 renderer.setClearColor('#000011')
+renderer.xr.enabled = true;
+document.body.appendChild(renderer.domElement);
+document.body.appendChild(ARButton.createButton(renderer));
 
 /**
  * Animate
  */
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
+// const tick = () =>
+// {
+//     const elapsedTime = clock.getElapsedTime()
+
+//     earth.rotation.y = elapsedTime * 0.1
+
+//     // Update controls
+//     controls.update()
+
+//     // Render
+//     renderer.render(scene, camera)
+
+//     // Call tick again on the next frame
+//     window.requestAnimationFrame(tick)
+// }
+
+// tick()
+renderer.setAnimationLoop(() => {
     const elapsedTime = clock.getElapsedTime()
-
     earth.rotation.y = elapsedTime * 0.1
-
-    // Update controls
-    controls.update()
-
-    // Render
     renderer.render(scene, camera)
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
-}
-
-tick()
+})
